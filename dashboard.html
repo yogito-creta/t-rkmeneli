@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panel</title>
+    <style>
+        body { background: #0055ff; color: white; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .btn { display: block; width: 200px; margin: 20px auto; padding: 20px; background: white; color: #0055ff; text-decoration: none; border-radius: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>ANA SİSTEM</h1>
+    <a href="/pixel-rapor" class="btn">PİXEL RAPOR</a>
+    <a href="#" class="btn">DUYURULAR</a>
+    <a href="#" class="btn">ŞABLONLAR</a>
+    
+    <hr style="margin-top: 50px; width: 50%;">
+    <h3>Admin Girişi</h3>
+    <form action="/admin-login" method="POST">
+        <input type="text" name="username" placeholder="Kullanıcı Adı" style="padding:5px;">
+        <input type="password" name="password" placeholder="Şifre" style="padding:5px;">
+        <button type="submit">Admin Gir</button>
+    </form>
+</body>
+</html>
