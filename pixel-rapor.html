@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pixel Rapor</title>
+    <style>
+        body { background: #0055ff; color: white; font-family: sans-serif; text-align: center; }
+        .form-box { background: white; color: black; width: 300px; margin: 50px auto; padding: 20px; border-radius: 10px; }
+        input, textarea { width: 90%; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h2>PİXEL RAPOR GÖNDER</h2>
+    <div class="form-box">
+        <p><b>İsminiz ve pixel sayınız gözükecek şekilde fotoğraf atınız!</b></p>
+        <form action="/submit-report" method="POST" enctype="multipart/form-data">
+            <input type="text" name="username" placeholder="İsminiz">
+            <input type="file" name="photo" accept="image/*" required>
+            <textarea name="message" placeholder="Eklenecek şey (isteğe bağlı)"></textarea>
+            <button type="submit" style="width:100%; padding:10px; background:#0055ff; color:white; border:none;">GÖNDER</button>
+        </form>
+    </div>
+    <a href="/dashboard" style="color:white;">Geri Dön</a>
+</body>
+</html>
