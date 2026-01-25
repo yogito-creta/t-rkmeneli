@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <style>
+        body { font-family: sans-serif; background: #1a1a1a; color: white; padding: 15px; margin: 0; }
+        .card { background: #333; padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 5px solid #0055ff; }
+        img { max-width: 100%; border-radius: 8px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Gelen Raporlar</h2>
+    <div id="list">Yükleniyor...</div>
+    <script>
+        fetch('/get-reports').then(res => res.json()).then(data => {
+            const div = document.getElementById('list');
+            div.innerHTML = data.length ? '' : 'Rapor yok.';
+            data.forEach(r => {
+                div.innerHTML += `<div class="card">
+                    <b>${r.user}</b><br>${r.text}<br>
+                    ${r.image ? `<img src="data:image/png;base64,${r.image}">` : ''}
+                </div>`;
+            });
+        });
+    </script>
+    <a href="/dashboard" style="color:#0055ff;">Çıkış Yap</a>
+</body>
+</html>
