@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kayıt</title>
     <style>
-        body { background: #0055ff; color: white; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: sans-serif; }
-        .card { background: rgba(0,0,0,0.2); padding: 40px; border-radius: 20px; text-align: center; }
-        input { display: block; width: 100%; margin: 15px 0; padding: 10px; }
-        button { padding: 10px 30px; background: white; color: #0055ff; border: none; cursor: pointer; font-weight: bold; }
+        body { background: #0055ff; color: white; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: sans-serif; margin: 0; }
+        .card { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; }
+        input { width: 100%; margin: 10px 0; padding: 12px; border-radius: 8px; border: none; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: white; color: #0055ff; border: none; cursor: pointer; font-weight: bold; border-radius: 8px; margin-top: 10px; }
+        p { font-size: 14px; color: #ffd700; }
     </style>
 </head>
 <body>
     <div class="card">
         <h2>KAYIT OL</h2>
-        <input type="text" placeholder="Gerçek adını ve soyadını girme!">
+        <p>Gerçek adını ve soyadını girme!</p>
+        <input type="text" placeholder="Kullanıcı Adı">
         <input type="password" placeholder="Şifre">
-        <button onclick="window.location='/dashboard'">KAYIT OL / GİRİŞ</button>
+        <button onclick="window.location='/dashboard'">KAYIT OL</button>
     </div>
 </body>
 </html>
