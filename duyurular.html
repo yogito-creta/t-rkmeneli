@@ -4,17 +4,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duyurular</title>
     <style>
-        body { background: #0055ff; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
-        .post { background: white; color: black; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-        .like { background: #ff4757; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        body { background: #0055ff; color: white; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
+        .announcement { background: white; color: black; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .announcement img { width: 100%; border-radius: 10px; margin-top: 10px; display: block; }
+        .like-btn { background: #ff4757; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold; width: 100%; }
+        .back-link { color: white; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 20px; border: 1px solid white; padding: 10px 20px; border-radius: 8px; }
     </style>
 </head>
 <body>
     <h1>DUYURULAR</h1>
-    <div class="post">
-        <p>Türkmeneli sistemine hoş geldiniz!</p>
-        <button class="like" onclick="this.innerHTML='❤️ Beğenildi'">Beğen</button>
-    </div>
-    <a href="/dashboard" style="color:white;">Geri Dön</a>
+    
+    <div id="announcementList">Yükleniyor...</div>
+
+    <a href="/dashboard" class="back-link">Ana Panele Dön</a>
+
+    <script>
+        // Sunucudaki duyuruları çeken fonksiyon
+        async function fetchAnnouncements() {
+            try {
+                const response = await fetch('/api/announcements');
+                const data = await response.json();
+                const listDiv = document.getElementById('announcementList');
+                
+                listDiv.innerHTML = ''; // Temizle
+
+                if (data.length === 0) {
+                    listDiv.innerHTML = '<p>Henüz duyuru paylaşılmadı.</p>';
+                    return;
+                }
+
+                data.forEach(item => {
+                    listDiv.innerHTML += `
+                        <div class="announcement">
+                            <p style="font-size: 18px; margin: 0;">${item.text}</p>
+                            ${item.image ? `<img src="data:image/png;base64,${item.image}">` : ''}
+                            <button class="like-btn" onclick="this.innerHTML='❤️ Beğenildi'">Beğen</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                document.getElementById('announcementList').innerHTML = 'Hata oluştu!';
+            }
+        }
+
+        // Sayfa açıldığında verileri çek
+        fetchAnnouncements();
+    </script>
 </body>
 </html>
