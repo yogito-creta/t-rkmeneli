@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem</title>
     <style>
-        body { background: #0055ff; color: white; font-family: sans-serif; text-align: center; padding-top: 50px; }
-        .btn { display: block; width: 200px; margin: 20px auto; padding: 20px; background: white; color: #0055ff; text-decoration: none; border-radius: 10px; font-weight: bold; }
+        body { background: #0055ff; color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .btn { display: block; width: 90%; max-width: 300px; margin: 15px auto; padding: 20px; background: white; color: #0055ff; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        .admin-box { margin-top: 50px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; }
+        input { padding: 10px; margin: 5px; border-radius: 5px; border: none; width: 80%; }
     </style>
 </head>
 <body>
-    <h1>ANA SİSTEM</h1>
+    <h2>ANA SİSTEM</h2>
     <a href="/pixel-rapor" class="btn">PİXEL RAPOR</a>
-    <a href="#" class="btn">DUYURULAR</a>
-    <a href="#" class="btn">ŞABLONLAR</a>
+    <a href="/duyurular" class="btn">DUYURULAR</a>
+    <a href="/sablonlar" class="btn">ŞABLONLAR</a>
     
-    <hr style="margin-top: 50px; width: 50%;">
-    <h3>Admin Girişi</h3>
-    <form action="/admin-login" method="POST">
-        <input type="text" name="username" placeholder="Kullanıcı Adı" style="padding:5px;">
-        <input type="password" name="password" placeholder="Şifre" style="padding:5px;">
-        <button type="submit">Admin Gir</button>
-    </form>
+    <div class="admin-box">
+        <h3>Admin Paneli</h3>
+        <form action="/admin-login" method="POST">
+            <input type="text" name="username" placeholder="Admin Adı">
+            <input type="password" name="password" placeholder="Şifre">
+            <button type="submit" style="padding: 10px 20px; border-radius: 5px; border: none; background: #222; color: white; margin-top: 10px;">Giriş Yap</button>
+        </form>
+    </div>
 </body>
 </html>
