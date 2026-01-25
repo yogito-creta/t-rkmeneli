@@ -1,75 +1,47 @@
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
+
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 const port = process.env.PORT || 3000;
 
-// Veri Depoları
-let reports = [];
-let announcements = [];
-let templates = [];
+let reports = [], announcements = [], templates = [];
+let onlineCount = 0;
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+const upload = multer({ limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
 
-// SAYFA YÖNLENDİRMELERİ
+// Rotalar
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/auth', (req, res) => res.sendFile(path.join(__dirname, 'auth.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'dashboard.html')));
-app.get('/pixel-rapor', (req, res) => res.sendFile(path.join(__dirname, 'pixel-rapor.html')));
-app.get('/admin-panel', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
-app.get('/duyurular', (req, res) => res.sendFile(path.join(__dirname, 'duyurular.html')));
-app.get('/sablonlar', (req, res) => res.sendFile(path.join(__dirname, 'sablonlar.html')));
+app.get('/sohbet', (req, res) => res.sendFile(path.join(__dirname, 'sohbet.html')));
+// Diğer get rotalarını (auth, admin vb.) önceki kodundaki gibi koru...
 
-// GİRİŞ KONTROLLERİ
-app.post('/login-first', (req, res) => {
-    if (req.body.password === "şifre") res.redirect('/auth');
-    else res.send("<script>alert('Yanlış Şifre!'); window.location='/';</script>");
+// Socket.io Sohbet Mantığı
+io.on('connection', (socket) => {
+    onlineCount++;
+    io.emit('update-online', onlineCount);
+
+    socket.on('send-msg', (data) => {
+        // Mesajı herkese gönder (isim, metin, varsa dosya)
+        io.emit('new-msg', data);
+    });
+
+    socket.on('disconnect', () => {
+        onlineCount--;
+        io.emit('update-online', onlineCount);
+    });
 });
 
-// Admin Girişi (Yeni Şifre: admin)
+// Admin Giriş (Şifre: admin)
 app.post('/admin-login', (req, res) => {
-    if (req.body.username === "admin" && req.body.password === "admin") {
-        res.redirect('/admin-panel');
-    } else {
-        res.send("<script>alert('Hatalı Admin Bilgisi!'); window.location='/dashboard';</script>");
-    }
+    if (req.body.username === "admin" && req.body.password === "admin") res.redirect('/admin-panel');
+    else res.send("<script>alert('Hata!'); window.location='/dashboard';</script>");
 });
 
-// PAYLAŞIM VE RAPOR SİSTEMİ
-app.post('/submit-report', upload.single('photo'), (req, res) => {
-    reports.push({ id: Date.now(), user: req.body.username, text: req.body.message, image: req.file ? req.file.buffer.toString('base64') : null });
-    res.send("<script>alert('Rapor Gönderildi!'); window.location='/dashboard';</script>");
-});
-
-app.post('/admin/add-announcement', upload.single('photo'), (req, res) => {
-    announcements.push({ id: Date.now(), text: req.body.text, image: req.file ? req.file.buffer.toString('base64') : null });
-    res.redirect('/admin-panel');
-});
-
-app.post('/admin/add-template', upload.single('photo'), (req, res) => {
-    templates.push({ id: Date.now(), text: req.body.text, image: req.file ? req.file.buffer.toString('base64') : null });
-    res.redirect('/admin-panel');
-});
-
-// SİLME İŞLEMLERİ
-app.get('/admin/delete-announcement/:id', (req, res) => {
-    announcements = announcements.filter(a => a.id != req.params.id);
-    res.redirect('/admin-panel');
-});
-
-app.get('/admin/delete-template/:id', (req, res) => {
-    templates = templates.filter(t => t.id != req.params.id);
-    res.redirect('/admin-panel');
-});
-
-// API ÇIKIŞLARI
-app.get('/api/reports', (req, res) => res.json(reports));
-app.get('/api/announcements', (req, res) => res.json(announcements));
-app.get('/api/templates', (req, res) => res.json(templates));
-
-app.listen(port, () => console.log(`Sistem aktif: ${port}`));
+server.listen(port, () => console.log(`Sistem aktif: ${port}`));
