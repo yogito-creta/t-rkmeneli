@@ -44,4 +44,7 @@ app.post('/admin-login', (req, res) => {
     else res.send("<script>alert('Hata!'); window.location='/dashboard';</script>");
 });
 
-server.listen(port, () => console.log(`Sistem aktif: ${port}`));
+server.listen(port, "0.0.0.0", () => {
+    console.log(`Sistem aktif: ${port}`);
+});
+
