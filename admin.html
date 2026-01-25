@@ -2,28 +2,73 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <title>Admin Full Panel</title>
     <style>
-        body { font-family: sans-serif; background: #1a1a1a; color: white; padding: 15px; margin: 0; }
-        .card { background: #333; padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 5px solid #0055ff; }
-        img { max-width: 100%; border-radius: 8px; margin-top: 10px; }
+        body { font-family: sans-serif; background: #1a1a1a; color: white; padding: 15px; }
+        .box { background: #333; padding: 15px; margin-bottom: 20px; border-radius: 10px; }
+        input, textarea { width: 100%; margin: 5px 0; padding: 10px; box-sizing: border-box; }
+        button { background: #0055ff; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px; }
+        .delete-btn { background: #ff4757; margin-top: 5px; }
+        img { max-width: 100px; display: block; margin: 10px 0; }
+        hr { border: 0; border-top: 1px solid #555; margin: 20px 0; }
     </style>
 </head>
 <body>
-    <h2>Gelen Raporlar</h2>
-    <div id="list">Yükleniyor...</div>
+    <h2>ADMİN KONTROL</h2>
+
+    <div class="box">
+        <h3>Duyuru Paylaş</h3>
+        <form action="/admin/add-announcement" method="POST" enctype="multipart/form-data">
+            <textarea name="text" placeholder="Duyuru metni..." required></textarea>
+            <input type="file" name="photo" accept="image/*">
+            <button type="submit">PAYLAŞ</button>
+        </form>
+    </div>
+
+    <div class="box">
+        <h3>Şablon Paylaş</h3>
+        <form action="/admin/add-template" method="POST" enctype="multipart/form-data">
+            <textarea name="text" placeholder="Şablon açıklaması..." required></textarea>
+            <input type="file" name="photo" accept="image/*">
+            <button type="submit">ŞABLON EKLE</button>
+        </form>
+    </div>
+
+    <hr>
+    <h3>Yayındaki Duyurular/Şablonlar ve Raporlar</h3>
+    <div id="contentList">Yükleniyor...</div>
+
     <script>
-        fetch('/get-reports').then(res => res.json()).then(data => {
-            const div = document.getElementById('list');
-            div.innerHTML = data.length ? '' : 'Rapor yok.';
-            data.forEach(r => {
-                div.innerHTML += `<div class="card">
-                    <b>${r.user}</b><br>${r.text}<br>
-                    ${r.image ? `<img src="data:image/png;base64,${r.image}">` : ''}
-                </div>`;
+        async function loadAdminData() {
+            const list = document.getElementById('contentList');
+            list.innerHTML = '';
+
+            // Raporları Çek
+            const repRes = await fetch('/api/reports');
+            const reports = await repRes.json();
+            list.innerHTML += "<h4>Gelen Raporlar</h4>";
+            reports.forEach(r => {
+                list.innerHTML += `<div class='box'><b>${r.user}:</b> ${r.text} ${r.image ? `<img src="data:image/png;base64,${r.image}">` : ''}</div>`;
             });
-        });
+
+            // Duyuruları Çek
+            const annRes = await fetch('/api/announcements');
+            const ann = await annRes.json();
+            list.innerHTML += "<h4>Duyurular</h4>";
+            ann.forEach(a => {
+                list.innerHTML += `<div class='box'>${a.text} <a href="/admin/delete-announcement/${a.id}"><button class="delete-btn">SİL</button></a></div>`;
+            });
+
+            // Şablonları Çek
+            const temRes = await fetch('/api/templates');
+            const tem = await temRes.json();
+            list.innerHTML += "<h4>Şablonlar</h4>";
+            tem.forEach(t => {
+                list.innerHTML += `<div class='box'>${t.text} <a href="/admin/delete-template/${t.id}"><button class="delete-btn">SİL</button></a></div>`;
+            });
+        }
+        loadAdminData();
     </script>
-    <a href="/dashboard" style="color:#0055ff;">Çıkış Yap</a>
+    <a href="/dashboard" style="color: white;">Panele Dön</a>
 </body>
 </html>
