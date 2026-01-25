@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş</title>
     <style>
-        body { background: black; color: white; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: sans-serif; }
-        input { padding: 10px; margin: 10px; border-radius: 5px; border: none; }
-        button { padding: 10px 20px; cursor: pointer; background: white; border: none; }
+        body { background: black; color: white; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: sans-serif; margin: 0; }
+        input { padding: 15px; width: 80%; max-width: 300px; margin-bottom: 15px; border-radius: 8px; border: none; font-size: 16px; }
+        button { padding: 15px 40px; cursor: pointer; background: white; border: none; font-weight: bold; border-radius: 8px; }
     </style>
 </head>
 <body>
-    <h1>TÜRKMENELİ ORJİNEL SİTE</h1>
-    <form action="/login-first" method="POST">
+    <h1>TÜRKMENELİ</h1>
+    <form action="/login-first" method="POST" style="text-align:center; width:100%;">
         <input type="password" name="password" placeholder="şifre gir" required>
         <br>
         <button type="submit">GİRİŞ</button>
