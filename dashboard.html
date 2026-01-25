@@ -4,25 +4,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem</title>
     <style>
-        body { background: #0055ff; color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
-        .btn { display: block; width: 90%; max-width: 300px; margin: 15px auto; padding: 20px; background: white; color: #0055ff; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
-        .admin-box { margin-top: 50px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; }
-        input { padding: 10px; margin: 5px; border-radius: 5px; border: none; width: 80%; }
+        body { 
+            background: #0055ff; 
+            color: white; 
+            font-family: sans-serif; 
+            text-align: center; 
+            margin: 0; 
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content { flex: 1; padding: 20px; }
+        h2 { margin-top: 30px; letter-spacing: 2px; }
+        
+        /* Ana Butonlar */
+        .btn { 
+            display: block; 
+            width: 90%; 
+            max-width: 300px; 
+            margin: 20px auto; 
+            padding: 20px; 
+            background: white; 
+            color: #0055ff; 
+            text-decoration: none; 
+            border-radius: 15px; 
+            font-weight: bold; 
+            font-size: 18px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .btn:active { transform: scale(0.95); }
+
+        /* Gizli Admin Alanı */
+        #adminArea { 
+            display: none; /* Başta gizli */
+            background: rgba(0,0,0,0.4); 
+            padding: 20px; 
+            margin: 20px auto;
+            width: 85%;
+            max-width: 300px;
+            border-radius: 15px;
+        }
+        input { 
+            padding: 12px; 
+            margin: 8px 0; 
+            border-radius: 8px; 
+            border: none; 
+            width: 100%; 
+            box-sizing: border-box;
+        }
+        .admin-submit {
+            background: #222;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Alt Kısım (Footer) */
+        footer {
+            padding: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .copyright {
+            cursor: pointer; /* Tıklanabilir olduğunu belli etmez ama tıklanır */
+            user-select: none;
+        }
     </style>
 </head>
 <body>
-    <h2>ANA SİSTEM</h2>
-    <a href="/pixel-rapor" class="btn">PİXEL RAPOR</a>
-    <a href="/duyurular" class="btn">DUYURULAR</a>
-    <a href="/sablonlar" class="btn">ŞABLONLAR</a>
-    
-    <div class="admin-box">
-        <h3>Admin Paneli</h3>
-        <form action="/admin-login" method="POST">
-            <input type="text" name="username" placeholder="Admin Adı">
-            <input type="password" name="password" placeholder="Şifre">
-            <button type="submit" style="padding: 10px 20px; border-radius: 5px; border: none; background: #222; color: white; margin-top: 10px;">Giriş Yap</button>
-        </form>
+
+    <div class="content">
+        <h2>ANA SİSTEM</h2>
+        
+        <a href="/pixel-rapor" class="btn">PİXEL RAPOR</a>
+        <a href="/duyurular" class="btn">DUYURULAR</a>
+        <a href="/sablonlar" class="btn">ŞABLONLAR</a>
+
+        <div id="adminArea">
+            <h4 style="margin-top:0">Yönetici Girişi</h4>
+            <form action="/admin-login" method="POST">
+                <input type="text" name="username" placeholder="Admin Adı" required>
+                <input type="password" name="password" placeholder="Şifre" required>
+                <button type="submit" class="admin-submit">GİRİŞ YAP</button>
+            </form>
+        </div>
     </div>
+
+    <footer>
+        <span class="copyright" onclick="toggleAdmin()">©2026 Türkmeneli™</span>
+    </footer>
+
+    <script>
+        function toggleAdmin() {
+            var area = document.getElementById("adminArea");
+            if (area.style.display === "none" || area.style.display === "") {
+                area.style.display = "block";
+                // Otomatik aşağı kaydır ki form gözüksün
+                window.scrollTo(0, document.body.scrollHeight);
+            } else {
+                area.style.display = "none";
+            }
+        }
+    </script>
+
 </body>
 </html>
